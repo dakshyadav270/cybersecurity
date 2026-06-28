@@ -1,0 +1,379 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberShield – Cybersecurity Awareness Portal</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #0a0e17;
+    --surface: #0f1624;
+    --card: #141d2e;
+    --border: #1e2d45;
+    --accent: #00d4ff;
+    --accent2: #ff4d6d;
+    --accent3: #39ff14;
+    --text: #e2e8f0;
+    --muted: #7a8fa8;
+    --danger: #ff4d6d;
+    --warning: #ffd166;
+    --safe: #39ff14;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,14,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 60px;
+  }
+  .nav-logo {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.2rem; color: var(--accent);
+    letter-spacing: 2px;
+  }
+  .nav-logo span { color: var(--accent2); }
+  .nav-links { display: flex; gap: 1.8rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.85rem; font-weight: 500; letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 92vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 4rem 2rem;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(0,212,255,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(255,77,109,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 3px;
+    color: var(--accent); text-transform: uppercase;
+    border: 1px solid rgba(0,212,255,0.3);
+    padding: 0.3rem 1rem; border-radius: 2px;
+    margin-bottom: 1.5rem;
+    animation: fadeDown 0.8s ease both;
+  }
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700; line-height: 1.1;
+    max-width: 800px;
+    animation: fadeDown 0.9s ease both 0.1s;
+  }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero p {
+    margin-top: 1.2rem; max-width: 560px;
+    color: var(--muted); font-size: 1.05rem;
+    animation: fadeDown 1s ease both 0.2s;
+  }
+  .hero-btns {
+    display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; justify-content: center;
+    animation: fadeDown 1s ease both 0.3s;
+  }
+  .btn {
+    padding: 0.75rem 1.8rem; border-radius: 4px;
+    font-weight: 600; font-size: 0.9rem; cursor: pointer;
+    text-decoration: none; transition: all 0.2s;
+    display: inline-block;
+  }
+  .btn-primary {
+    background: var(--accent); color: #000;
+  }
+  .btn-primary:hover { background: #33ddff; transform: translateY(-2px); }
+  .btn-outline {
+    border: 1px solid var(--border); color: var(--text); background: transparent;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 4rem; flex-wrap: wrap; justify-content: center;
+    animation: fadeDown 1s ease both 0.4s;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 2rem; color: var(--accent); display: block;
+  }
+  .stat-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 1px; }
+
+  /* ── SECTION COMMON ── */
+  section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .section-header { text-align: center; margin-bottom: 3rem; }
+  .section-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 3px;
+    color: var(--accent2); text-transform: uppercase;
+    margin-bottom: 0.5rem; display: block;
+  }
+  .section-header h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2rem; font-weight: 700;
+  }
+  .section-header p { color: var(--muted); margin-top: 0.5rem; }
+  .divider {
+    height: 1px; background: var(--border);
+    max-width: 1100px; margin: 0 auto;
+  }
+
+  /* ── THREATS ── */
+  .threats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .threat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.8rem;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .threat-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+  }
+  .threat-card.red::before { background: var(--accent2); }
+  .threat-card.blue::before { background: var(--accent); }
+  .threat-card.green::before { background: var(--safe); }
+  .threat-card.yellow::before { background: var(--warning); }
+  .threat-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .threat-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+  .threat-card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem; margin-bottom: 0.5rem;
+  }
+  .threat-card p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
+  .threat-badge {
+    display: inline-block; margin-top: 1rem;
+    font-size: 0.72rem; font-family: 'Share Tech Mono', monospace;
+    padding: 0.2rem 0.6rem; border-radius: 2px; letter-spacing: 1px;
+  }
+  .badge-high { background: rgba(255,77,109,0.15); color: var(--accent2); }
+  .badge-med { background: rgba(255,209,102,0.15); color: var(--warning); }
+  .badge-low { background: rgba(57,255,20,0.15); color: var(--safe); }
+
+  /* ── TIPS ── */
+  #tips { background: var(--surface); max-width: 100%; padding: 5rem 2rem; }
+  #tips > * { max-width: 1100px; margin-left: auto; margin-right: auto; }
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.2rem; max-width: 1100px; margin: 0 auto;
+  }
+  .tip-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.4rem;
+    display: flex; gap: 1rem; align-items: flex-start;
+  }
+  .tip-num {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--accent); font-size: 1.2rem;
+    min-width: 30px; padding-top: 2px;
+  }
+  .tip-item h4 { font-size: 0.95rem; margin-bottom: 0.3rem; }
+  .tip-item p { color: var(--muted); font-size: 0.82rem; }
+
+  /* ── PASSWORD TOOL ── */
+  .tool-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 2.5rem;
+    max-width: 600px; margin: 0 auto;
+  }
+  .tool-box label {
+    display: block; font-size: 0.85rem;
+    color: var(--muted); margin-bottom: 0.5rem;
+    font-family: 'Share Tech Mono', monospace; letter-spacing: 1px;
+  }
+  .tool-box input[type="text"],
+  .tool-box input[type="password"] {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: 'Share Tech Mono', monospace;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .tool-box input:focus { border-color: var(--accent); }
+  .strength-bar-wrap {
+    height: 6px; background: var(--border);
+    border-radius: 3px; margin: 1rem 0 0.4rem;
+    overflow: hidden;
+  }
+  .strength-bar {
+    height: 100%; width: 0%;
+    border-radius: 3px;
+    transition: width 0.4s ease, background 0.4s ease;
+  }
+  .strength-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem; letter-spacing: 1px;
+    color: var(--muted);
+  }
+  .strength-tips { margin-top: 1rem; }
+  .strength-tips li {
+    font-size: 0.82rem; color: var(--muted);
+    margin-bottom: 0.3rem; list-style: none;
+    padding-left: 1.2rem; position: relative;
+  }
+  .strength-tips li::before { content: '›'; position: absolute; left: 0; color: var(--accent); }
+  .strength-tips li.pass { color: var(--safe); }
+  .strength-tips li.pass::before { content: '✓'; color: var(--safe); }
+  .gen-btn {
+    margin-top: 1.5rem; width: 100%;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9rem; letter-spacing: 1px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .gen-btn:hover { background: var(--accent); color: #000; }
+  .gen-out {
+    margin-top: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.95rem;
+    word-break: break-all;
+    color: var(--accent3);
+    display: none;
+    position: relative;
+  }
+  .copy-btn {
+    position: absolute; right: 8px; top: 8px;
+    background: var(--border); border: none;
+    color: var(--muted); padding: 0.2rem 0.5rem;
+    border-radius: 4px; cursor: pointer;
+    font-size: 0.75rem; font-family: 'Share Tech Mono', monospace;
+  }
+  .copy-btn:hover { color: var(--accent); }
+
+  /* ── QUIZ ── */
+  .quiz-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 2.5rem;
+    max-width: 680px; margin: 0 auto;
+  }
+  .quiz-progress {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem; color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+  .quiz-q {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.15rem; margin-bottom: 1.5rem; line-height: 1.5;
+  }
+  .quiz-options { display: flex; flex-direction: column; gap: 0.8rem; }
+  .quiz-opt {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px; padding: 0.9rem 1.2rem;
+    cursor: pointer; font-size: 0.9rem;
+    transition: all 0.18s; text-align: left;
+    color: var(--text);
+  }
+  .quiz-opt:hover { border-color: var(--accent); color: var(--accent); }
+  .quiz-opt.correct { border-color: var(--safe); background: rgba(57,255,20,0.08); color: var(--safe); }
+  .quiz-opt.wrong { border-color: var(--accent2); background: rgba(255,77,109,0.08); color: var(--accent2); }
+  .quiz-opt:disabled { cursor: not-allowed; }
+  .quiz-feedback {
+    margin-top: 1rem; font-size: 0.88rem;
+    padding: 0.75rem 1rem; border-radius: 6px;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.good { background: rgba(57,255,20,0.08); color: var(--safe); }
+  .quiz-feedback.bad { background: rgba(255,77,109,0.08); color: var(--accent2); }
+  .quiz-next {
+    margin-top: 1.2rem; display: none;
+    background: var(--accent); color: #000;
+    border: none; padding: 0.7rem 1.6rem;
+    border-radius: 6px; font-weight: 700;
+    cursor: pointer; font-size: 0.9rem;
+  }
+  .quiz-next:hover { background: #33ddff; }
+  .quiz-score {
+    text-align: center; display: none;
+    padding: 1rem 0;
+  }
+  .score-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 3rem; color: var(--accent);
+    display: block;
+  }
+  .score-msg { color: var(--muted); margin-top: 0.5rem; }
+  .quiz-restart {
+    margin-top: 1.5rem;
+    background: transparent; border: 1px solid var(--accent);
+    color: var(--accent); padding: 0.7rem 1.6rem;
+    border-radius: 6px; cursor: pointer;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted); font-size: 0.82rem;
+    font-family: 'Share Tech Mono', monospace;
+  }
+  footer span { color: var(--accent); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .hero-stats { gap: 1.5rem; }
+    .tool-box, .quiz-box { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+

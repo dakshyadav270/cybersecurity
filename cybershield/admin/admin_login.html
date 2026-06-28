@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Admin Login – CyberShield</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@400;600&display=swap');
+  *{margin:0;padding:0;box-sizing:border-box}
+  body{background:#0a0e17;color:#e2e8f0;font-family:'Inter',sans-serif;min-height:100vh;display:flex;align-items:center;justify-content:center}
+  .box{background:#141d2e;border:1px solid #1e2d45;border-radius:12px;padding:2.5rem;width:90%;max-width:400px}
+  h2{font-family:'Share Tech Mono',monospace;color:#00d4ff;margin-bottom:.4rem;letter-spacing:2px}
+  p{color:#7a8fa8;font-size:.82rem;margin-bottom:1.8rem}
+  label{font-size:.72rem;letter-spacing:1px;color:#7a8fa8;display:block;margin-bottom:.35rem}
+  input{width:100%;background:#0a0e17;border:1px solid #1e2d45;color:#e2e8f0;padding:.75rem 1rem;border-radius:6px;font-size:.9rem;outline:none;margin-bottom:1rem}
+  input:focus{border-color:#00d4ff}
+  button{width:100%;background:#00d4ff;color:#000;border:none;padding:.85rem;border-radius:6px;font-size:.95rem;font-weight:700;cursor:pointer;font-family:'Share Tech Mono',monospace;letter-spacing:1px}
+  button:hover{background:#00bde8}
+  .error{background:rgba(255,77,109,.1);border:1px solid rgba(255,77,109,.3);color:#ff4d6d;padding:.7rem 1rem;border-radius:6px;font-size:.82rem;margin-bottom:1rem;display:none}
+  .back{display:block;text-align:center;margin-top:1rem;color:#7a8fa8;font-size:.8rem;text-decoration:none}
+  .back:hover{color:#00d4ff}
+</style>
+</head>
+<body>
+<div class="box">
+  <h2>// ADMIN LOGIN</h2>
+  <p>CyberShield Admin Dashboard</p>
+  <div class="error" id="errMsg"></div>
+  <label>USERNAME</label>
+  <input type="text" id="uname" placeholder="admin" value="admin">
+  <label>PASSWORD</label>
+  <input type="password" id="upass" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+  <button onclick="doLogin()" id="btn">🔓 LOGIN TO DASHBOARD</button>
+  <a href="/cybershield/public/index.php" class="back">← Back to main site</a>
+</div>
+<script>
+async function doLogin() {
+  const btn = document.getElementById('btn');
+  const err = document.getElementById('errMsg');
+  err.style.display = 'none';
+  btn.textContent = 'Logging in…';
+  btn.disabled = true;
+
+  try {
+    const res = await fetch('/cybershield/api/login.php', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({
+        login:    document.getElementById('uname').value,
+        password: document.getElementById('upass').value
+      })
+    });
+    const data = await res.json();
+    if (data.success) {
+      if (data.user.role === 'admin') {
+        window.location.href = '/cybershield/admin/index.php';
+      } else {
+        err.textContent = 'This account is not an admin.';
+        err.style.display = 'block';
+      }
+    } else {
+      err.textContent = data.error || 'Login failed.';
+      err.style.display = 'block';
+    }
+  } catch(e) {
+    err.textContent = 'Network error — make sure XAMPP is running.';
+    err.style.display = 'block';
+  }
+
+  btn.textContent = '🔓 LOGIN TO DASHBOARD';
+  btn.disabled = false;
+}
+</script>
+</body>
+</html>

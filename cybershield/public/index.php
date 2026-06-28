@@ -1,0 +1,1073 @@
+<?php session_start(); ?>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>CyberShield – Cybersecurity Awareness Portal</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Share+Tech+Mono&family=Inter:wght@300;400;500;600;700&family=Space+Grotesk:wght@400;500;700&display=swap');
+
+  :root {
+    --bg: #0a0e17;
+    --surface: #0f1624;
+    --card: #141d2e;
+    --border: #1e2d45;
+    --accent: #00d4ff;
+    --accent2: #ff4d6d;
+    --accent3: #39ff14;
+    --text: #e2e8f0;
+    --muted: #7a8fa8;
+    --danger: #ff4d6d;
+    --warning: #ffd166;
+    --safe: #39ff14;
+  }
+
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg);
+    color: var(--text);
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    overflow-x: hidden;
+  }
+
+  /* ── NAV ── */
+  nav {
+    position: sticky; top: 0; z-index: 100;
+    background: rgba(10,14,23,0.92);
+    backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+    display: flex; align-items: center; justify-content: space-between;
+    padding: 0 2rem; height: 60px;
+  }
+  .nav-logo {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 1.2rem; color: var(--accent);
+    letter-spacing: 2px;
+  }
+  .nav-logo span { color: var(--accent2); }
+  .nav-links { display: flex; gap: 1.8rem; list-style: none; }
+  .nav-links a {
+    color: var(--muted); text-decoration: none;
+    font-size: 0.85rem; font-weight: 500; letter-spacing: 0.5px;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--accent); }
+
+  /* ── HERO ── */
+  .hero {
+    min-height: 92vh;
+    display: flex; flex-direction: column;
+    align-items: center; justify-content: center;
+    text-align: center; padding: 4rem 2rem;
+    position: relative; overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute; inset: 0;
+    background:
+      radial-gradient(ellipse 60% 50% at 50% 0%, rgba(0,212,255,0.08) 0%, transparent 70%),
+      radial-gradient(ellipse 40% 40% at 80% 80%, rgba(255,77,109,0.06) 0%, transparent 60%);
+    pointer-events: none;
+  }
+  .hero-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.75rem; letter-spacing: 3px;
+    color: var(--accent); text-transform: uppercase;
+    border: 1px solid rgba(0,212,255,0.3);
+    padding: 0.3rem 1rem; border-radius: 2px;
+    margin-bottom: 1.5rem;
+    animation: fadeDown 0.8s ease both;
+  }
+  .hero h1 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: clamp(2.5rem, 6vw, 4.5rem);
+    font-weight: 700; line-height: 1.1;
+    max-width: 800px;
+    animation: fadeDown 0.9s ease both 0.1s;
+  }
+  .hero h1 em { font-style: normal; color: var(--accent); }
+  .hero p {
+    margin-top: 1.2rem; max-width: 560px;
+    color: var(--muted); font-size: 1.05rem;
+    animation: fadeDown 1s ease both 0.2s;
+  }
+  .hero-btns {
+    display: flex; gap: 1rem; margin-top: 2.5rem; flex-wrap: wrap; justify-content: center;
+    animation: fadeDown 1s ease both 0.3s;
+  }
+  .btn {
+    padding: 0.75rem 1.8rem; border-radius: 4px;
+    font-weight: 600; font-size: 0.9rem; cursor: pointer;
+    text-decoration: none; transition: all 0.2s;
+    display: inline-block;
+  }
+  .btn-primary {
+    background: var(--accent); color: #000;
+  }
+  .btn-primary:hover { background: #33ddff; transform: translateY(-2px); }
+  .btn-outline {
+    border: 1px solid var(--border); color: var(--text); background: transparent;
+  }
+  .btn-outline:hover { border-color: var(--accent); color: var(--accent); }
+
+  .hero-stats {
+    display: flex; gap: 3rem; margin-top: 4rem; flex-wrap: wrap; justify-content: center;
+    animation: fadeDown 1s ease both 0.4s;
+  }
+  .stat { text-align: center; }
+  .stat-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 2rem; color: var(--accent); display: block;
+  }
+  .stat-label { font-size: 0.78rem; color: var(--muted); letter-spacing: 1px; }
+
+  /* ── SECTION COMMON ── */
+  section { padding: 5rem 2rem; max-width: 1100px; margin: 0 auto; }
+  .section-header { text-align: center; margin-bottom: 3rem; }
+  .section-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.72rem; letter-spacing: 3px;
+    color: var(--accent2); text-transform: uppercase;
+    margin-bottom: 0.5rem; display: block;
+  }
+  .section-header h2 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 2rem; font-weight: 700;
+  }
+  .section-header p { color: var(--muted); margin-top: 0.5rem; }
+  .divider {
+    height: 1px; background: var(--border);
+    max-width: 1100px; margin: 0 auto;
+  }
+
+  /* ── THREATS ── */
+  .threats-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+    gap: 1.5rem;
+  }
+  .threat-card {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.8rem;
+    transition: border-color 0.2s, transform 0.2s;
+    position: relative; overflow: hidden;
+  }
+  .threat-card::before {
+    content: ''; position: absolute;
+    top: 0; left: 0; right: 0; height: 3px;
+  }
+  .threat-card.red::before { background: var(--accent2); }
+  .threat-card.blue::before { background: var(--accent); }
+  .threat-card.green::before { background: var(--safe); }
+  .threat-card.yellow::before { background: var(--warning); }
+  .threat-card:hover { border-color: var(--accent); transform: translateY(-4px); }
+  .threat-icon { font-size: 2rem; margin-bottom: 1rem; display: block; }
+  .threat-card h3 {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.1rem; margin-bottom: 0.5rem;
+  }
+  .threat-card p { color: var(--muted); font-size: 0.88rem; line-height: 1.6; }
+  .threat-badge {
+    display: inline-block; margin-top: 1rem;
+    font-size: 0.72rem; font-family: 'Share Tech Mono', monospace;
+    padding: 0.2rem 0.6rem; border-radius: 2px; letter-spacing: 1px;
+  }
+  .badge-high { background: rgba(255,77,109,0.15); color: var(--accent2); }
+  .badge-med { background: rgba(255,209,102,0.15); color: var(--warning); }
+  .badge-low { background: rgba(57,255,20,0.15); color: var(--safe); }
+
+  /* ── TIPS ── */
+  #tips { background: var(--surface); max-width: 100%; padding: 5rem 2rem; }
+  #tips > * { max-width: 1100px; margin-left: auto; margin-right: auto; }
+  .tips-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 1.2rem; max-width: 1100px; margin: 0 auto;
+  }
+  .tip-item {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 8px; padding: 1.4rem;
+    display: flex; gap: 1rem; align-items: flex-start;
+  }
+  .tip-num {
+    font-family: 'Share Tech Mono', monospace;
+    color: var(--accent); font-size: 1.2rem;
+    min-width: 30px; padding-top: 2px;
+  }
+  .tip-item h4 { font-size: 0.95rem; margin-bottom: 0.3rem; }
+  .tip-item p { color: var(--muted); font-size: 0.82rem; }
+
+  /* ── PASSWORD TOOL ── */
+  .tool-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 2.5rem;
+    max-width: 600px; margin: 0 auto;
+  }
+  .tool-box label {
+    display: block; font-size: 0.85rem;
+    color: var(--muted); margin-bottom: 0.5rem;
+    font-family: 'Share Tech Mono', monospace; letter-spacing: 1px;
+  }
+  .tool-box input[type="text"],
+  .tool-box input[type="password"] {
+    width: 100%;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    color: var(--text);
+    padding: 0.75rem 1rem;
+    border-radius: 6px;
+    font-size: 1rem;
+    font-family: 'Share Tech Mono', monospace;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+  .tool-box input:focus { border-color: var(--accent); }
+  .strength-bar-wrap {
+    height: 6px; background: var(--border);
+    border-radius: 3px; margin: 1rem 0 0.4rem;
+    overflow: hidden;
+  }
+  .strength-bar {
+    height: 100%; width: 0%;
+    border-radius: 3px;
+    transition: width 0.4s ease, background 0.4s ease;
+  }
+  .strength-label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem; letter-spacing: 1px;
+    color: var(--muted);
+  }
+  .strength-tips { margin-top: 1rem; }
+  .strength-tips li {
+    font-size: 0.82rem; color: var(--muted);
+    margin-bottom: 0.3rem; list-style: none;
+    padding-left: 1.2rem; position: relative;
+  }
+  .strength-tips li::before { content: '›'; position: absolute; left: 0; color: var(--accent); }
+  .strength-tips li.pass { color: var(--safe); }
+  .strength-tips li.pass::before { content: '✓'; color: var(--safe); }
+  .gen-btn {
+    margin-top: 1.5rem; width: 100%;
+    background: transparent;
+    border: 1px solid var(--accent);
+    color: var(--accent);
+    padding: 0.75rem;
+    border-radius: 6px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9rem; letter-spacing: 1px;
+    cursor: pointer; transition: all 0.2s;
+  }
+  .gen-btn:hover { background: var(--accent); color: #000; }
+  .gen-out {
+    margin-top: 1rem;
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px;
+    padding: 0.75rem 1rem;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.95rem;
+    word-break: break-all;
+    color: var(--accent3);
+    display: none;
+    position: relative;
+  }
+  .copy-btn {
+    position: absolute; right: 8px; top: 8px;
+    background: var(--border); border: none;
+    color: var(--muted); padding: 0.2rem 0.5rem;
+    border-radius: 4px; cursor: pointer;
+    font-size: 0.75rem; font-family: 'Share Tech Mono', monospace;
+  }
+  .copy-btn:hover { color: var(--accent); }
+
+  /* ── QUIZ ── */
+  .quiz-box {
+    background: var(--card);
+    border: 1px solid var(--border);
+    border-radius: 12px; padding: 2.5rem;
+    max-width: 680px; margin: 0 auto;
+  }
+  .quiz-progress {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.78rem; color: var(--muted);
+    margin-bottom: 1.5rem;
+  }
+  .quiz-q {
+    font-family: 'Space Grotesk', sans-serif;
+    font-size: 1.15rem; margin-bottom: 1.5rem; line-height: 1.5;
+  }
+  .quiz-options { display: flex; flex-direction: column; gap: 0.8rem; }
+  .quiz-opt {
+    background: var(--surface);
+    border: 1px solid var(--border);
+    border-radius: 6px; padding: 0.9rem 1.2rem;
+    cursor: pointer; font-size: 0.9rem;
+    transition: all 0.18s; text-align: left;
+    color: var(--text);
+  }
+  .quiz-opt:hover { border-color: var(--accent); color: var(--accent); }
+  .quiz-opt.correct { border-color: var(--safe); background: rgba(57,255,20,0.08); color: var(--safe); }
+  .quiz-opt.wrong { border-color: var(--accent2); background: rgba(255,77,109,0.08); color: var(--accent2); }
+  .quiz-opt:disabled { cursor: not-allowed; }
+  .quiz-feedback {
+    margin-top: 1rem; font-size: 0.88rem;
+    padding: 0.75rem 1rem; border-radius: 6px;
+    display: none;
+  }
+  .quiz-feedback.show { display: block; }
+  .quiz-feedback.good { background: rgba(57,255,20,0.08); color: var(--safe); }
+  .quiz-feedback.bad { background: rgba(255,77,109,0.08); color: var(--accent2); }
+  .quiz-next {
+    margin-top: 1.2rem; display: none;
+    background: var(--accent); color: #000;
+    border: none; padding: 0.7rem 1.6rem;
+    border-radius: 6px; font-weight: 700;
+    cursor: pointer; font-size: 0.9rem;
+  }
+  .quiz-next:hover { background: #33ddff; }
+  .quiz-score {
+    text-align: center; display: none;
+    padding: 1rem 0;
+  }
+  .score-num {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 3rem; color: var(--accent);
+    display: block;
+  }
+  .score-msg { color: var(--muted); margin-top: 0.5rem; }
+  .quiz-restart {
+    margin-top: 1.5rem;
+    background: transparent; border: 1px solid var(--accent);
+    color: var(--accent); padding: 0.7rem 1.6rem;
+    border-radius: 6px; cursor: pointer;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 0.9rem;
+  }
+
+  /* ── FOOTER ── */
+  footer {
+    text-align: center;
+    padding: 3rem 2rem;
+    border-top: 1px solid var(--border);
+    color: var(--muted); font-size: 0.82rem;
+    font-family: 'Share Tech Mono', monospace;
+  }
+  footer span { color: var(--accent); }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown {
+    from { opacity: 0; transform: translateY(-20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  /* ── RESPONSIVE ── */
+  @media (max-width: 640px) {
+    .nav-links { display: none; }
+    .hero-stats { gap: 1.5rem; }
+    .tool-box, .quiz-box { padding: 1.5rem; }
+  }
+</style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <div class="nav-logo">CYBER<span>SHIELD</span> <span style="font-size:.7em;letter-spacing:2px;font-weight:700;color:var(--text)">BY DAKSH YADAV </span></div>
+  <ul class="nav-links">
+    <li><a href="#threats">Threats</a></li>
+    <li><a href="#tips">Prevention</a></li>  
+    <li><a href="#tool">Password Tool</a></li>
+    <li><a href="#quiz">Quiz</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+  <div style="display:flex;align-items:center;gap:.8rem">
+    <button onclick="toggleTheme()" id="themeBtn" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:.35rem .7rem;border-radius:6px;cursor:pointer;font-size:.8rem;transition:.2s" title="Toggle theme">☀️</button>
+    <button onclick="openChatbot()" style="background:rgba(0,212,255,.1);border:1px solid rgba(0,212,255,.3);color:var(--accent);padding:.35rem .8rem;border-radius:6px;cursor:pointer;font-size:.8rem">🤖 AI Chat</button>
+    <!-- Logged-out state -->
+    <div id="authGuest" style="display:flex;gap:.5rem">
+      <button onclick="openModal('loginModal')" style="background:transparent;border:1px solid var(--border);color:var(--muted);padding:.35rem .8rem;border-radius:6px;cursor:pointer;font-size:.8rem">Login</button>
+      <button onclick="openModal('registerModal')" style="background:var(--accent);color:#000;border:none;padding:.35rem .8rem;border-radius:6px;cursor:pointer;font-size:.8rem;font-weight:600">Register</button>
+    </div>
+    <!-- Logged-in state -->
+    <div id="authUser" style="display:none;align-items:center;gap:.6rem">
+      <a href="/profile.php" style="color:var(--accent);font-size:.82rem;text-decoration:none" id="navUsername"></a>
+      <span id="navBadge" style="font-size:.72rem;padding:.2rem .5rem;border-radius:10px;background:rgba(0,212,255,.1);color:var(--accent);font-family:'Share Tech Mono',monospace"></span>
+      <button onclick="logout()" style="background:rgba(255,77,109,.1);border:1px solid rgba(255,77,109,.3);color:var(--accent2);padding:.3rem .7rem;border-radius:6px;cursor:pointer;font-size:.78rem">Logout</button>
+    </div>
+  </div>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">// Cybersecurity Awareness Portal</div>
+  <h1>Stay Safe in the<br><em>Digital World</em></h1>
+  <p>Learn about cyber threats, protect yourself with proven techniques, and test your security knowledge.</p>
+  <div class="hero-btns">
+    <a href="#threats" class="btn btn-primary">Explore Threats</a>
+    <a href="#quiz" class="btn btn-outline">Take the Quiz</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat"><span class="stat-num">2,200+</span><span class="stat-label">Attacks / Day</span></div>
+    <div class="stat"><span class="stat-num">95%</span><span class="stat-label">Human Error Cause</span></div>
+    <div class="stat"><span class="stat-num">$4.45M</span><span class="stat-label">Avg Breach Cost</span></div>
+  </div>
+</div>
+
+<div class="divider"></div>
+
+<!-- THREATS -->
+<section id="threats">
+  <div class="section-header">
+    <span class="section-tag">// Know Your Enemy</span>
+    <h2>Common Cyber Threats</h2>
+    <p>Understanding attacks is the first step to defending against them.</p>
+  </div>
+  <div class="threats-grid">
+    <div class="threat-card red">
+      <span class="threat-icon">🎣</span>
+      <h3>Phishing Attacks</h3>
+      <p>Fraudulent emails or websites that trick users into revealing sensitive information like passwords and credit card numbers by impersonating trusted sources.</p>
+      <span class="threat-badge badge-high">HIGH RISK</span>
+    </div>
+    <div class="threat-card blue">
+      <span class="threat-icon">🦠</span>
+      <h3>Malware & Ransomware</h3>
+      <p>Malicious software that infiltrates systems to steal data, corrupt files, or encrypt your data and demand payment for its release.</p>
+      <span class="threat-badge badge-high">HIGH RISK</span>
+    </div>
+    <div class="threat-card yellow">
+      <span class="threat-icon">🕵️</span>
+      <h3>Social Engineering</h3>
+      <p>Psychological manipulation that tricks people into breaking security procedures, often by impersonating IT staff or authority figures.</p>
+      <span class="threat-badge badge-high">HIGH RISK</span>
+    </div>
+    <div class="threat-card red">
+      <span class="threat-icon">💥</span>
+      <h3>DDoS Attacks</h3>
+      <p>Distributed Denial of Service attacks flood servers with traffic from thousands of devices, making websites and services unavailable to real users.</p>
+      <span class="threat-badge badge-med">MEDIUM RISK</span>
+    </div>
+    <div class="threat-card green">
+      <span class="threat-icon">🔓</span>
+      <h3>Weak Passwords</h3>
+      <p>Simple or reused passwords are cracked using brute-force tools in seconds. Poor password hygiene is one of the most preventable vulnerabilities.</p>
+      <span class="threat-badge badge-high">HIGH RISK</span>
+    </div>
+    <div class="threat-card blue">
+      <span class="threat-icon">📡</span>
+      <h3>Man-in-the-Middle</h3>
+      <p>Attackers intercept communications between two parties on unsecured networks (like public Wi-Fi) to eavesdrop or alter data in transit.</p>
+      <span class="threat-badge badge-med">MEDIUM RISK</span>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- TIPS -->
+<section id="tips">
+  <div class="section-header">
+    <span class="section-tag">// Defense Strategies</span>
+    <h2>How to Stay Protected</h2>
+    <p>Simple habits that dramatically improve your security posture.</p>
+  </div>
+  <div class="tips-grid">
+    <div class="tip-item"><span class="tip-num">01</span><div><h4>Use Strong Passwords</h4><p>Create passwords with 12+ characters mixing uppercase, lowercase, numbers, and symbols. Never reuse passwords across sites.</p></div></div>
+    <div class="tip-item"><span class="tip-num">02</span><div><h4>Enable 2FA Everywhere</h4><p>Two-factor authentication adds a second layer — even if your password is stolen, attackers can't log in without your phone.</p></div></div>
+    <div class="tip-item"><span class="tip-num">03</span><div><h4>Keep Software Updated</h4><p>Updates patch security vulnerabilities. Enable auto-updates for your OS, browser, and apps to stay protected automatically.</p></div></div>
+    <div class="tip-item"><span class="tip-num">04</span><div><h4>Verify Before You Click</h4><p>Hover over links to preview URLs before clicking. Check the sender email carefully — phishing often uses look-alike addresses.</p></div></div>
+    <div class="tip-item"><span class="tip-num">05</span><div><h4>Avoid Public Wi-Fi</h4><p>Use a VPN on public networks. Never access banking or sensitive accounts on unsecured Wi-Fi hotspots.</p></div></div>
+    <div class="tip-item"><span class="tip-num">06</span><div><h4>Back Up Your Data</h4><p>Follow the 3-2-1 rule: 3 copies, on 2 different media, with 1 off-site. This protects you from ransomware and hardware failure.</p></div></div>
+    <div class="tip-item"><span class="tip-num">07</span><div><h4>Use a Password Manager</h4><p>Tools like Bitwarden or KeePass generate and store unique passwords for every site so you only need to remember one master password.</p></div></div>
+    <div class="tip-item"><span class="tip-num">08</span><div><h4>Check for HTTPS</h4><p>Always look for the padlock icon and "https://" before entering any personal or payment information on a website.</p></div></div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- PASSWORD TOOL -->
+<section id="tool">
+  <div class="section-header">
+    <span class="section-tag">// Interactive Tool</span>
+    <h2>Password Strength Checker</h2>
+    <p>Test your password's strength or generate a secure one instantly.</p>
+  </div>
+  <div class="tool-box">
+    <label>ENTER YOUR PASSWORD</label>
+    <input type="password" id="pwdInput" placeholder="Type a password to check…" oninput="checkPassword(this.value)" autocomplete="off">
+    <div class="strength-bar-wrap"><div class="strength-bar" id="strengthBar"></div></div>
+    <div class="strength-label" id="strengthLabel">Waiting for input…</div>
+    <ul class="strength-tips" id="strengthTips">
+      <li id="tipLen">At least 12 characters</li>
+      <li id="tipUpper">Uppercase letters (A-Z)</li>
+      <li id="tipLower">Lowercase letters (a-z)</li>
+      <li id="tipNum">Numbers (0-9)</li>
+      <li id="tipSym">Special characters (!@#$…)</li>
+    </ul>
+    <button class="gen-btn" onclick="generatePassword()">⚡ GENERATE STRONG PASSWORD</button>
+    <div class="gen-out" id="genOut">
+      <span id="genText"></span>
+      <button class="copy-btn" onclick="copyPassword()">COPY</button>
+    </div>
+  </div>
+</section>
+
+<div class="divider"></div>
+
+<!-- QUIZ -->
+<section id="quiz">
+  <div class="section-header">
+    <span class="section-tag">// Test Your Knowledge</span>
+    <h2>Cybersecurity Quiz</h2>
+    <p>10 questions to see how security-savvy you are.</p>
+  </div>
+  <div class="quiz-box">
+    <div class="quiz-progress" id="quizProgress">Question 1 of 10</div>
+    <div id="quizContent">
+      <div class="quiz-q" id="quizQ"></div>
+      <div class="quiz-options" id="quizOpts"></div>
+      <div class="quiz-feedback" id="quizFeedback"></div>
+      <button class="quiz-next" id="quizNext" onclick="nextQuestion()">Next →</button>
+    </div>
+    <div class="quiz-score" id="quizScore">
+      <span class="score-num" id="scoreNum"></span>
+      <div class="score-msg" id="scoreMsg"></div>
+      <button class="quiz-restart" onclick="restartQuiz()">↺ RESTART QUIZ</button>
+    </div>
+  </div>
+</section>
+
+<!-- CONTACT -->
+<div class="divider"></div>
+<section id="contact">
+  <div class="section-header">
+    <span class="section-tag">// Get in Touch</span>
+    <h2>Contact Us</h2>
+    <p>Have a question, suggestion, or want to report something?</p>
+  </div>
+  <div style="max-width:600px;margin:0 auto">
+    <div class="tool-box">
+      <div style="display:grid;grid-template-columns:1fr 1fr;gap:1rem;margin-bottom:1rem">
+        <div>
+          <label style="font-size:.75rem;letter-spacing:1px;color:var(--muted);display:block;margin-bottom:.4rem">YOUR NAME</label>
+          <input type="text" id="cName" placeholder="John Doe" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:.7rem 1rem;border-radius:6px;font-size:.9rem;outline:none">
+        </div>
+        <div>
+          <label style="font-size:.75rem;letter-spacing:1px;color:var(--muted);display:block;margin-bottom:.4rem">EMAIL</label>
+          <input type="email" id="cEmail" placeholder="you@example.com" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:.7rem 1rem;border-radius:6px;font-size:.9rem;outline:none">
+        </div>
+      </div>
+      <label style="font-size:.75rem;letter-spacing:1px;color:var(--muted);display:block;margin-bottom:.4rem">SUBJECT</label>
+      <input type="text" id="cSubject" placeholder="What's this about?" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:.7rem 1rem;border-radius:6px;font-size:.9rem;margin-bottom:1rem;outline:none">
+      <label style="font-size:.75rem;letter-spacing:1px;color:var(--muted);display:block;margin-bottom:.4rem">MESSAGE</label>
+      <textarea id="cMessage" rows="4" placeholder="Your message…" style="width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:.7rem 1rem;border-radius:6px;font-size:.9rem;resize:vertical;margin-bottom:1rem;font-family:inherit;outline:none"></textarea>
+      <button class="gen-btn" onclick="sendContact()" id="contactBtn">📨 SEND MESSAGE</button>
+      <div id="contactMsg" style="margin-top:.8rem;font-size:.85rem;text-align:center"></div>
+    </div>
+  </div>
+</section>
+
+<!-- LEADERBOARD -->
+<div class="divider"></div>
+<section id="leaderboard">
+  <div class="section-header">
+    <span class="section-tag">// Top Scorers</span>
+    <h2>Quiz Leaderboard</h2>
+    <p>The most security-savvy members of our community.</p>
+  </div>
+  <div style="max-width:700px;margin:0 auto">
+    <div class="tool-box" id="leaderboardBox">
+      <div style="text-align:center;color:var(--muted);font-size:.85rem;padding:1rem">Loading leaderboard…</div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ MODALS ══════════════════════════════════════════════════ -->
+<style>
+.cs-modal{display:none;position:fixed;inset:0;background:rgba(0,0,0,.75);z-index:1000;align-items:center;justify-content:center}
+.cs-modal.open{display:flex}
+.cs-modal-box{background:var(--card);border:1px solid var(--border);border-radius:12px;padding:2rem;width:90%;max-width:420px;position:relative}
+.cs-modal-close{position:absolute;top:1rem;right:1rem;background:none;border:none;color:var(--muted);font-size:1.1rem;cursor:pointer}
+.cs-label{font-size:.72rem;letter-spacing:1px;color:var(--muted);display:block;margin-bottom:.35rem;margin-top:.8rem}
+.cs-input{width:100%;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:.7rem 1rem;border-radius:6px;font-size:.9rem;outline:none;transition:.2s}
+.cs-input:focus{border-color:var(--accent)}
+.cs-error{color:var(--accent2);font-size:.8rem;margin-top:.5rem;min-height:1.1rem}
+</style>
+
+<!-- Login Modal -->
+<div class="cs-modal" id="loginModal">
+  <div class="cs-modal-box">
+    <button class="cs-modal-close" onclick="closeModal('loginModal')">✕</button>
+    <h3 style="font-family:'Share Tech Mono',monospace;color:var(--accent);margin-bottom:.5rem;letter-spacing:2px">// LOGIN</h3>
+    <label class="cs-label">USERNAME OR EMAIL</label>
+    <input class="cs-input" type="text" id="loginLogin" placeholder="username or email">
+    <label class="cs-label">PASSWORD</label>
+    <input class="cs-input" type="password" id="loginPassword" placeholder="••••••••" onkeydown="if(event.key==='Enter')doLogin()">
+    <div id="loginError" class="cs-error"></div>
+    <button class="gen-btn" onclick="doLogin()" id="loginBtn" style="margin-top:.8rem;width:100%">🔓 LOGIN</button>
+    <p style="text-align:center;font-size:.8rem;color:var(--muted);margin-top:1rem">No account? <a href="#" onclick="switchModal('loginModal','registerModal')" style="color:var(--accent)">Register →</a></p>
+  </div>
+</div>
+
+<!-- Register Modal -->
+<div class="cs-modal" id="registerModal">
+  <div class="cs-modal-box">
+    <button class="cs-modal-close" onclick="closeModal('registerModal')">✕</button>
+    <h3 style="font-family:'Share Tech Mono',monospace;color:var(--accent);margin-bottom:.5rem;letter-spacing:2px">// CREATE ACCOUNT</h3>
+    <label class="cs-label">USERNAME</label>
+    <input class="cs-input" type="text" id="regUsername" placeholder="coolhacker42">
+    <label class="cs-label">EMAIL</label>
+    <input class="cs-input" type="email" id="regEmail" placeholder="you@example.com">
+    <label class="cs-label">PASSWORD</label>
+    <input class="cs-input" type="password" id="regPassword" placeholder="Min 8 chars, 1 uppercase, 1 number">
+    <div id="registerError" class="cs-error"></div>
+    <div id="registerSuccess" style="display:none;background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.3);color:#39ff14;padding:.8rem;border-radius:6px;font-size:.82rem;margin-top:.5rem"></div>
+    <button class="gen-btn" onclick="doRegister()" id="registerBtn" style="margin-top:.8rem;width:100%">🛡️ CREATE ACCOUNT</button>
+    <p style="text-align:center;font-size:.8rem;color:var(--muted);margin-top:1rem">Already registered? <a href="#" onclick="switchModal('registerModal','loginModal')" style="color:var(--accent)">Login →</a></p>
+  </div>
+</div>
+
+<!-- AI Chatbot Widget -->
+<div id="chatbotWindow" style="display:none;position:fixed;bottom:5.5rem;right:1.5rem;width:340px;background:var(--card);border:1px solid var(--border);border-radius:12px;z-index:999;flex-direction:column;box-shadow:0 8px 32px rgba(0,0,0,.5)">
+  <div style="padding:.9rem 1.2rem;border-bottom:1px solid var(--border);display:flex;justify-content:space-between;align-items:center">
+    <div style="font-family:'Share Tech Mono',monospace;color:var(--accent);font-size:.82rem">🤖 CYBERBOT — AI Assistant</div>
+    <button onclick="closeChatbot()" style="background:none;border:none;color:var(--muted);cursor:pointer;font-size:1rem">✕</button>
+  </div>
+  <div id="chatMessages" style="overflow-y:auto;padding:.8rem;display:flex;flex-direction:column;gap:.6rem;height:280px"></div>
+  <div style="padding:.6rem .8rem;border-top:1px solid var(--border);display:flex;gap:.5rem">
+    <input id="chatInput" type="text" placeholder="Ask about cybersecurity…" style="flex:1;background:var(--bg);border:1px solid var(--border);color:var(--text);padding:.45rem .75rem;border-radius:6px;font-size:.8rem;outline:none" onkeydown="if(event.key==='Enter')sendChat()">
+    <button onclick="sendChat()" style="background:var(--accent);color:#000;border:none;padding:.45rem .75rem;border-radius:6px;cursor:pointer;font-size:.85rem;font-weight:700">→</button>
+  </div>
+</div>
+<button id="chatFab" onclick="toggleChatbot()" style="position:fixed;bottom:1.5rem;right:1.5rem;width:52px;height:52px;border-radius:50%;background:linear-gradient(135deg,var(--accent),var(--accent2));border:none;color:#fff;font-size:1.3rem;cursor:pointer;z-index:998;box-shadow:0 4px 16px rgba(0,212,255,.3)">🤖</button>
+
+<!-- FOOTER -->
+<footer>
+  <p>CyberShield &nbsp;|&nbsp; Cybersecurity Awareness Portal &nbsp;|&nbsp; <span>Computer Engineering Department</span></p>
+  <p style="margin-top:0.4rem; color: #3a4a5a;">C. U. Shah (Govt) Polytechnic, Surendranagar &nbsp;|&nbsp; Mr. Daksh T. Yadav, Student</p>
+</footer>
+
+<script>
+// ══════════════════════════════════════════════════════════════
+//  CyberShield – Frontend JS  (wired to PHP backend)
+// ══════════════════════════════════════════════════════════════
+
+// ── THEME TOGGLE ─────────────────────────────────────────────
+let darkMode = localStorage.getItem('theme') !== 'light';
+function applyTheme() {
+  const r = document.documentElement.style;
+  if (darkMode) {
+    r.setProperty('--bg','#0a0e17'); r.setProperty('--surface','#0f1624');
+    r.setProperty('--card','#141d2e'); r.setProperty('--border','#1e2d45');
+    r.setProperty('--text','#e2e8f0'); r.setProperty('--muted','#7a8fa8');
+    document.getElementById('themeBtn').textContent = '☀️';
+  } else {
+    r.setProperty('--bg','#f0f4f8'); r.setProperty('--surface','#e2e8f0');
+    r.setProperty('--card','#ffffff'); r.setProperty('--border','#cbd5e1');
+    r.setProperty('--text','#1a202c'); r.setProperty('--muted','#64748b');
+    document.getElementById('themeBtn').textContent = '🌙';
+  }
+  localStorage.setItem('theme', darkMode ? 'dark' : 'light');
+}
+function toggleTheme() { darkMode = !darkMode; applyTheme(); }
+applyTheme();
+
+// ── MODAL HELPERS ────────────────────────────────────────────
+function openModal(id)  { document.getElementById(id).classList.add('open'); }
+function closeModal(id) { document.getElementById(id).classList.remove('open'); }
+function switchModal(close, open) { closeModal(close); openModal(open); }
+document.addEventListener('click', e => {
+  ['loginModal','registerModal'].forEach(id => {
+    const m = document.getElementById(id);
+    if (m && e.target === m) closeModal(id);
+  });
+});
+
+// ── AUTH STATE ───────────────────────────────────────────────
+let currentUser = null;
+async function checkSession() {
+  try {
+    const r = await fetch('/cybershield/api/me.php');
+    const d = await r.json();
+    if (d.loggedIn) {
+      currentUser = d.user;
+      setNavLoggedIn(d.user);
+      if (d.user.role === 'admin') addAdminLink();
+    }
+  } catch (e) {}
+  loadLeaderboard();
+}
+
+function setNavLoggedIn(user) {
+  document.getElementById('authGuest').style.display = 'none';
+  const authUser = document.getElementById('authUser');
+  authUser.style.display = 'flex';
+  document.getElementById('navUsername').textContent = '👤 ' + user.username;
+  document.getElementById('navUsername').href = '/cybershield/profile.php';
+  document.getElementById('navBadge').textContent = user.badge;
+}
+
+function addAdminLink() {
+  const li = document.createElement('li');
+  li.innerHTML = '<a href="/cybershield/admin/index.php" style="color:var(--accent2)">⚙️ Admin</a>';
+  document.querySelector('.nav-links').appendChild(li);
+}
+
+async function logout() {
+  await fetch('/cybershield/api/logout.php');
+  currentUser = null;
+  document.getElementById('authGuest').style.display = 'flex';
+  document.getElementById('authUser').style.display = 'none';
+  location.reload();
+}
+
+// ── LOGIN ────────────────────────────────────────────────────
+async function doLogin() {
+  const btn = document.getElementById('loginBtn');
+  const err = document.getElementById('loginError');
+  err.textContent = '';
+  btn.textContent = 'Logging in…'; btn.disabled = true;
+  try {
+    const r = await fetch('/cybershield/api/login.php', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        login:    document.getElementById('loginLogin').value,
+        password: document.getElementById('loginPassword').value
+      })
+    });
+    const d = await r.json();
+    if (d.success) {
+      closeModal('loginModal');
+      currentUser = d.user;
+      setNavLoggedIn(d.user);
+      if (d.user.role === 'admin') addAdminLink();
+    } else {
+      err.textContent = d.error || 'Login failed.';
+    }
+  } catch(e) { err.textContent = 'Network error. Try again.'; }
+  btn.textContent = '🔓 LOGIN'; btn.disabled = false;
+}
+
+// ── REGISTER ─────────────────────────────────────────────────
+async function doRegister() {
+  const btn = document.getElementById('registerBtn');
+  const err = document.getElementById('registerError');
+  const suc = document.getElementById('registerSuccess');
+  err.textContent = ''; suc.style.display = 'none';
+  btn.textContent = 'Creating account…'; btn.disabled = true;
+  try {
+   const r = await fetch('/cybershield/api/register.php', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        username: document.getElementById('regUsername').value.trim(),
+        email:    document.getElementById('regEmail').value.trim(),
+        password: document.getElementById('regPassword').value.trim()
+      })
+    });
+    const text = await r.text();
+    console.log('Register response:', text);
+    const d = JSON.parse(text);
+    if (d.success) {
+      suc.textContent = '✓ ' + d.message;
+      suc.style.display = 'block';
+      btn.style.display = 'none';
+    } else {
+      err.textContent = d.error || 'Registration failed.';
+    }
+  } catch(e) { err.textContent = 'Network error. Try again.'; }
+  btn.textContent = '🛡️ CREATE ACCOUNT'; btn.disabled = false;
+}
+
+// ── CONTACT FORM ─────────────────────────────────────────────
+async function sendContact() {
+  const btn = document.getElementById('contactBtn');
+  const msg = document.getElementById('contactMsg');
+  btn.textContent = 'Sending…'; btn.disabled = true;
+  try {
+    const r = await fetch('/cybershield/api/contact.php', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({
+        name:    document.getElementById('cName').value,
+        email:   document.getElementById('cEmail').value,
+        subject: document.getElementById('cSubject').value,
+        message: document.getElementById('cMessage').value,
+      })
+    });
+    const d = await r.json();
+    if (d.success) {
+      msg.style.color = 'var(--safe)';
+      msg.textContent = '✓ ' + d.message;
+      ['cName','cEmail','cSubject','cMessage'].forEach(id => document.getElementById(id).value = '');
+    } else {
+      msg.style.color = 'var(--accent2)';
+      msg.textContent = '✗ ' + (d.error || 'Failed to send.');
+    }
+  } catch(e) { msg.style.color = 'var(--accent2)'; msg.textContent = 'Network error.'; }
+  btn.textContent = '📨 SEND MESSAGE'; btn.disabled = false;
+}
+
+// ── LEADERBOARD ──────────────────────────────────────────────
+async function loadLeaderboard() {
+  const box = document.getElementById('leaderboardBox');
+  try {
+    const r = await fetch('/cybershield/api/quiz.php');
+    const d = await r.json();
+    if (!d.leaderboard || !d.leaderboard.length) {
+      box.innerHTML = '<p style="text-align:center;color:var(--muted);padding:1rem">No scores yet. Take the quiz to be first!</p>';
+      return;
+    }
+    const medals = ['🥇','🥈','🥉'];
+    box.innerHTML = `<table style="width:100%;border-collapse:collapse;font-size:.83rem">
+      <thead><tr>
+        <th style="padding:.6rem .8rem;color:var(--muted);font-weight:500;text-align:left;border-bottom:1px solid var(--border)">Rank</th>
+        <th style="padding:.6rem .8rem;color:var(--muted);font-weight:500;text-align:left;border-bottom:1px solid var(--border)">Username</th>
+        <th style="padding:.6rem .8rem;color:var(--muted);font-weight:500;text-align:left;border-bottom:1px solid var(--border)">Badge</th>
+        <th style="padding:.6rem .8rem;color:var(--muted);font-weight:500;text-align:right;border-bottom:1px solid var(--border)">Best Score</th>
+      </tr></thead>
+      <tbody>${d.leaderboard.map((u,i)=>`<tr>
+        <td style="padding:.6rem .8rem">${medals[i]||'#'+(i+1)}</td>
+        <td style="padding:.6rem .8rem">${u.username}</td>
+        <td style="padding:.6rem .8rem"><span style="font-size:.72rem;padding:.15rem .5rem;border-radius:3px;background:rgba(0,212,255,.1);color:var(--accent);font-family:'Share Tech Mono',monospace">${u.badge_level}</span></td>
+        <td style="padding:.6rem .8rem;text-align:right;font-family:'Share Tech Mono',monospace;color:var(--accent)">${u.best_score}/10</td>
+      </tr>`).join('')}</tbody>
+    </table>`;
+  } catch(e) { box.innerHTML = '<p style="color:var(--muted);text-align:center;padding:1rem">Could not load leaderboard.</p>'; }
+}
+
+// ── CHATBOT ──────────────────────────────────────────────────
+let chatOpen = false, chatHistory = [];
+const chatWelcome = {role:'assistant', content:'👋 Hi! I\'m CyberBot. Ask me anything about cybersecurity — threats, passwords, safe browsing, phishing, and more!'};
+
+function toggleChatbot() { chatOpen ? closeChatbot() : openChatbot(); }
+function openChatbot()  {
+  chatOpen = true;
+  const w = document.getElementById('chatbotWindow');
+  w.style.display = 'flex'; w.style.flexDirection = 'column';
+  if (!document.getElementById('chatMessages').children.length) {
+    appendChatMsg(chatWelcome.content, 'assistant');
+  }
+  document.getElementById('chatInput').focus();
+}
+function closeChatbot() { chatOpen = false; document.getElementById('chatbotWindow').style.display = 'none'; }
+
+function appendChatMsg(text, role) {
+  const box = document.getElementById('chatMessages');
+  const div = document.createElement('div');
+  div.style.cssText = `padding:.55rem .8rem;border-radius:8px;font-size:.8rem;line-height:1.5;max-width:90%;${
+    role==='user'
+      ? 'background:rgba(0,212,255,.12);color:var(--text);align-self:flex-end;border:1px solid rgba(0,212,255,.2)'
+      : 'background:rgba(255,255,255,.04);color:var(--text);align-self:flex-start;border:1px solid var(--border)'
+  }`;
+  div.textContent = text;
+  box.appendChild(div);
+  box.scrollTop = box.scrollHeight;
+}
+
+async function sendChat() {
+  const input = document.getElementById('chatInput');
+  const msg = input.value.trim();
+  if (!msg) return;
+  input.value = '';
+  appendChatMsg(msg, 'user');
+  chatHistory.push({role:'user', content: msg});
+
+  const typing = document.createElement('div');
+  typing.id = 'chatTyping';
+  typing.style.cssText = 'padding:.55rem .8rem;border-radius:8px;font-size:.8rem;color:var(--muted);border:1px solid var(--border);background:rgba(255,255,255,.04);align-self:flex-start';
+  typing.textContent = '…';
+  document.getElementById('chatMessages').appendChild(typing);
+
+  try {
+    const r = await fetch('/cybershield/api/chatbot.php', {
+      method: 'POST',
+      headers: {'Content-Type':'application/json'},
+      body: JSON.stringify({message: msg, history: chatHistory.slice(-8)})
+    });
+    const d = await r.json();
+    document.getElementById('chatTyping')?.remove();
+    const reply = d.reply || d.error || 'Sorry, I could not respond.';
+    appendChatMsg(reply, 'assistant');
+    chatHistory.push({role:'assistant', content: reply});
+  } catch(e) {
+    document.getElementById('chatTyping')?.remove();
+    appendChatMsg('Network error. Please try again.', 'assistant');
+  }
+}
+
+// ── PASSWORD CHECKER ──
+function checkPassword(pw) {
+  const bar = document.getElementById('strengthBar');
+  const label = document.getElementById('strengthLabel');
+  const tips = {
+    len:   { el: document.getElementById('tipLen'),   pass: pw.length >= 12 },
+    upper: { el: document.getElementById('tipUpper'), pass: /[A-Z]/.test(pw) },
+    lower: { el: document.getElementById('tipLower'), pass: /[a-z]/.test(pw) },
+    num:   { el: document.getElementById('tipNum'),   pass: /[0-9]/.test(pw) },
+    sym:   { el: document.getElementById('tipSym'),   pass: /[^A-Za-z0-9]/.test(pw) },
+  };
+  let score = 0;
+  for (const k in tips) {
+    if (tips[k].pass) { score++; tips[k].el.classList.add('pass'); }
+    else tips[k].el.classList.remove('pass');
+  }
+  if (!pw) { bar.style.width = '0%'; label.textContent = 'Waiting for input…'; return; }
+  const levels = [
+    { w: '20%', bg: '#ff4d6d', text: 'VERY WEAK — Change it now' },
+    { w: '40%', bg: '#ff4d6d', text: 'WEAK — Add more variety' },
+    { w: '60%', bg: '#ffd166', text: 'MODERATE — Getting better' },
+    { w: '80%', bg: '#ffd166', text: 'STRONG — Almost there' },
+    { w: '100%',bg: '#39ff14', text: 'VERY STRONG — Great password!' },
+  ];
+  const lvl = levels[Math.min(score, 5) - 1] || levels[0];
+  bar.style.width = lvl.w;
+  bar.style.background = lvl.bg;
+  label.style.color = lvl.bg;
+  label.textContent = lvl.text;
+}
+
+function generatePassword() {
+  const chars = 'ABCDEFGHJKMNPQRSTUVWXYZabcdefghjkmnpqrstuvwxyz23456789!@#$%&*?';
+  let pwd = '';
+  for (let i = 0; i < 16; i++) pwd += chars[Math.floor(Math.random() * chars.length)];
+  const out = document.getElementById('genOut');
+  document.getElementById('genText').textContent = pwd;
+  out.style.display = 'block';
+}
+
+function copyPassword() {
+  const text = document.getElementById('genText').textContent;
+  navigator.clipboard.writeText(text).then(() => {
+    const btn = document.querySelector('.copy-btn');
+    btn.textContent = 'COPIED!';
+    setTimeout(() => btn.textContent = 'COPY', 1500);
+  });
+}
+
+// ── QUIZ ──
+const questions = [
+  { q: "What does 'phishing' refer to in cybersecurity?", opts: ["Scanning a network for open ports","Fraudulent attempts to steal sensitive info via fake emails/sites","Installing a firewall to block attacks","Encrypting data for secure transmission"], ans: 1, exp: "Phishing uses fake emails or websites to trick users into revealing passwords, credit card numbers, or other sensitive data." },
+  { q: "Which type of malware encrypts your files and demands payment?", opts: ["Spyware","Adware","Ransomware","Worm"], ans: 2, exp: "Ransomware locks or encrypts victims' files and demands a ransom payment to restore access." },
+  { q: "What does '2FA' stand for?", opts: ["Two-Factor Authentication","Two-Firewall Architecture","Trusted Firewall Access","Two-Form Authorization"], ans: 0, exp: "2FA (Two-Factor Authentication) adds a second verification step — usually a code sent to your phone — making accounts far harder to hack." },
+  { q: "Which of the following is the STRONGEST password?", opts: ["password123","John1990","Tr@ff!c#L1ght$42","ABCDEFGH"], ans: 2, exp: "A strong password mixes upper/lowercase letters, numbers, and symbols, and avoids real words or personal info." },
+  { q: "What does HTTPS indicate about a website?", opts: ["The site is popular and verified by Google","The connection is encrypted and more secure","The site has been tested for viruses","The site is government-approved"], ans: 1, exp: "HTTPS (HyperText Transfer Protocol Secure) means data between your browser and the site is encrypted using SSL/TLS." },
+  { q: "What is a 'firewall' in networking?", opts: ["Physical device that cools down servers","Software to speed up internet connection","Security system that monitors and controls network traffic","A type of antivirus program"], ans: 2, exp: "A firewall is a network security system that monitors and controls incoming/outgoing traffic based on predefined security rules." },
+  { q: "What is 'social engineering' in cybersecurity?", opts: ["Building social media platforms","Manipulating people psychologically to gain unauthorized access","Hacking using programming code","Using AI to generate fake news"], ans: 1, exp: "Social engineering exploits human psychology rather than technical vulnerabilities — tricking people into revealing information or performing actions." },
+  { q: "Which is a safe practice when using public Wi-Fi?", opts: ["Log into your bank account","Use a VPN to encrypt your traffic","Share your login credentials with others","Disable your device's firewall"], ans: 1, exp: "A VPN (Virtual Private Network) encrypts your internet traffic, protecting you from eavesdroppers on public Wi-Fi networks." },
+  { q: "What is the main goal of a DDoS attack?", opts: ["Steal user passwords","Make a website or service unavailable","Install ransomware on servers","Spy on user communications"], ans: 1, exp: "DDoS (Distributed Denial of Service) attacks flood a target with massive traffic from many devices, overwhelming it and making it unavailable." },
+  { q: "What does 'encryption' do to data?", opts: ["Deletes sensitive data permanently","Converts data into an unreadable format to protect it","Speeds up data transmission","Makes data publicly available"], ans: 1, exp: "Encryption converts data into a coded format (ciphertext) that can only be read by someone with the correct decryption key." },
+];
+
+let current = 0, score = 0, answered = false;
+
+function loadQuestion() {
+  const q = questions[current];
+  document.getElementById('quizProgress').textContent = `Question ${current + 1} of ${questions.length}`;
+  document.getElementById('quizQ').textContent = q.q;
+  const optsEl = document.getElementById('quizOpts');
+  optsEl.innerHTML = '';
+  q.opts.forEach((opt, i) => {
+    const btn = document.createElement('button');
+    btn.className = 'quiz-opt';
+    btn.textContent = opt;
+    btn.onclick = () => answer(i);
+    optsEl.appendChild(btn);
+  });
+  document.getElementById('quizFeedback').className = 'quiz-feedback';
+  document.getElementById('quizFeedback').textContent = '';
+  document.getElementById('quizNext').style.display = 'none';
+  answered = false;
+}
+
+function answer(idx) {
+  if (answered) return;
+  answered = true;
+  const q = questions[current];
+  const opts = document.querySelectorAll('.quiz-opt');
+  opts.forEach(b => b.disabled = true);
+  opts[idx].classList.add(idx === q.ans ? 'correct' : 'wrong');
+  opts[q.ans].classList.add('correct');
+  const fb = document.getElementById('quizFeedback');
+  if (idx === q.ans) { score++; fb.className = 'quiz-feedback show good'; fb.textContent = '✓ Correct! ' + q.exp; }
+  else { fb.className = 'quiz-feedback show bad'; fb.textContent = '✗ Not quite. ' + q.exp; }
+  document.getElementById('quizNext').style.display = 'inline-block';
+}
+
+async function nextQuestion() {
+  current++;
+  if (current < questions.length) { loadQuestion(); }
+  else {
+    document.getElementById('quizContent').style.display = 'none';
+    const scoreEl = document.getElementById('quizScore');
+    scoreEl.style.display = 'block';
+    document.getElementById('scoreNum').textContent = `${score} / ${questions.length}`;
+    const msgs = [
+      [0,3,'Keep learning! Explore the threats section above.'],
+      [4,6,'Good effort! Review the prevention tips to level up.'],
+      [7,8,'Well done! You have solid security awareness.'],
+      [9,10,'Excellent! You are a cybersecurity champion! 🔐'],
+    ];
+    const msg = msgs.find(([lo,hi]) => score >= lo && score <= hi);
+    document.getElementById('scoreMsg').textContent = msg ? msg[2] : '';
+    // Save score to backend if logged in
+    if (currentUser) {
+      try {
+        const r = await fetch('/cybershield/api/quiz.php', {
+          method: 'POST',
+          headers: {'Content-Type':'application/json'},
+          body: JSON.stringify({score, total_q: questions.length})
+        });
+        const d = await r.json();
+        if (d.success) {
+          // Update badge in nav
+          document.getElementById('navBadge').textContent = d.badge;
+          currentUser.badge = d.badge;
+          // Add badge notification
+          const note = document.createElement('div');
+          note.style.cssText = 'margin-top:.8rem;padding:.6rem 1rem;background:rgba(57,255,20,.08);border:1px solid rgba(57,255,20,.3);color:#39ff14;border-radius:6px;font-size:.82rem;text-align:center';
+          note.textContent = `✓ Score saved! Your badge: ${d.badge} | Best: ${d.best_score}/10`;
+          document.getElementById('quizScore').appendChild(note);
+          loadLeaderboard();
+        }
+      } catch(e) {}
+    } else {
+      const note = document.createElement('div');
+      note.style.cssText = 'margin-top:.8rem;padding:.6rem 1rem;background:rgba(0,212,255,.06);border:1px solid rgba(0,212,255,.2);color:var(--accent);border-radius:6px;font-size:.82rem;text-align:center;cursor:pointer';
+      note.innerHTML = '🔐 <a href="#" onclick="openModal(\'loginModal\')" style="color:var(--accent)">Login or register</a> to save your score to the leaderboard!';
+      document.getElementById('quizScore').appendChild(note);
+    }
+  }
+}
+
+function restartQuiz() {
+  current = 0; score = 0;
+  document.getElementById('quizContent').style.display = 'block';
+  document.getElementById('quizScore').style.display = 'none';
+  loadQuestion();
+}
+
+loadQuestion();
+
+// ── INIT ─────────────────────────────────────────────────────
+const urlParams = new URLSearchParams(window.location.search);
+if (urlParams.get('verified') === '1') {
+  setTimeout(() => {
+    openModal('loginModal');
+    document.getElementById('loginError').style.color = 'var(--safe)';
+    document.getElementById('loginError').textContent = '✓ Email verified! You can now log in.';
+  }, 500);
+}
+checkSession();
+</script>
+</body>
+</html>
